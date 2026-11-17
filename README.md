@@ -30,9 +30,57 @@ cp config/job-radar.example.json config/job-radar.local.json
 ```
 
 Edit `config/job-radar.local.json` with your own profile and watchlist. It is
-gitignored (everything in `config/` except `*.example.*` files is ignored), so it
-stays on your machine. The config shape is provisional until the config loader
-lands.
+gitignored (everything in `config/` except `*.example.*` files is ignored, and
+`*.local.json` is ignored anywhere), so it stays on your machine. **Never commit
+your real search profile or watchlist.** The committed example and all test
+fixtures use fictional placeholders only.
+
+### Config shape
+
+`config/job-radar.example.json` shows every field. The config has two parts:
+
+`profile` — what to look for:
+
+- `titlesInclude` (required): titles to match, at least one.
+- `titlesStretch`: titles that are still allowed but rank below
+  `titlesInclude`.
+- `titlesExclude`: titles to drop.
+- `seniority` (required): a `label` plus optional whole-number `minYears` and
+  `maxYears` (`minYears` must not exceed `maxYears`).
+- `locations`: each entry has a display `name` and optional `aliases` (other
+  place names for the same area).
+- `remote.usRemote` (required): `"fallback"`, `"allowed"`, or `"off"` (see
+  below).
+- `pay.minTopOfRangeBaseUsd` (required): minimum acceptable top of a listed
+  base-pay range, in whole US dollars.
+- `pay.belowMinimum`: `"flag"` (default) or `"demote"`.
+- `pay.unlistedPay`: `"keep"` (the default and only option).
+- `industries`: free-form industry tags.
+
+`watchlist` — at least one company, each with `company`, `provider`
+(`greenhouse`, `lever`, or `ashby`), and `boardToken` (the company's public
+board identifier on that provider).
+
+Unknown keys are rejected so typos surface early. A top-level `_comment` string
+is allowed for notes.
+
+**Pay rule.** If a posting lists a base-pay range and the top of that range is
+below `pay.minTopOfRangeBaseUsd`, the posting is flagged or demoted (per
+`pay.belowMinimum`). Postings that do not list pay are always kept.
+
+**US-remote fallback.** `"fallback"` keeps US-remote postings but ranks them
+below postings in one of your `locations`. `"allowed"` treats US-remote the same
+as a location match. `"off"` drops US-remote postings that don't match a
+location (at least one location is then required).
+
+### Loading the config
+
+`loadConfig(path?)` reads, parses, and validates a config file and returns a
+typed object. With no argument it reads `config/job-radar.local.json` relative
+to the current working directory. Any problem (missing file, invalid JSON,
+missing or invalid fields, unknown keys, unknown provider, empty watchlist,
+duplicate boards) throws a `ConfigError` whose message lists every issue with
+its field path, for example `watchlist[0].provider: ...`.
 
 ## Development
 

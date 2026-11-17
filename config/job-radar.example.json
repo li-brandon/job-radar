@@ -1,31 +1,41 @@
 {
-  "_comment": "Example only. Copy to config/job-radar.local.json (gitignored) and edit. All companies and board IDs below are fictional placeholders. The schema is provisional until LIB-539.",
+  "_comment": "Example only. Copy to config/job-radar.local.json (gitignored) and edit. Every title, place, industry, company, and board token below is a fictional placeholder.",
   "profile": {
-    "titles": ["Software Engineer", "Backend Engineer"],
-    "keywords": ["TypeScript", "Node.js"],
-    "seniority": ["mid", "senior"],
-    "locations": ["Example City"],
-    "remote": true,
-    "exclude": {
-      "companies": ["Initech"],
-      "titleKeywords": ["Manager"]
-    }
+    "titlesInclude": [
+      "Widget Engineer",
+      "Widget Engineer II",
+      "Backend Widget Engineer"
+    ],
+    "titlesStretch": ["Senior Widget Engineer"],
+    "titlesExclude": ["Chief Widget Officer", "Apprentice", "Intern"],
+    "seniority": { "label": "mid-level", "minYears": 2, "maxYears": 5 },
+    "locations": [
+      { "name": "Example Metro", "aliases": ["Example City", "Sample Town"] },
+      { "name": "Metropolis", "aliases": ["Metro Centre"] }
+    ],
+    "remote": { "usRemote": "fallback" },
+    "pay": {
+      "minTopOfRangeBaseUsd": 100000,
+      "belowMinimum": "flag",
+      "unlistedPay": "keep"
+    },
+    "industries": ["widgets", "sprockets"]
   },
   "watchlist": [
     {
       "company": "Example Corp",
       "provider": "greenhouse",
-      "boardId": "example-corp"
+      "boardToken": "example-corp"
     },
     {
       "company": "Acme",
       "provider": "lever",
-      "boardId": "acme"
+      "boardToken": "acme"
     },
     {
       "company": "Globex",
       "provider": "ashby",
-      "boardId": "globex"
+      "boardToken": "globex"
     }
   ]
 }

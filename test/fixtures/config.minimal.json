@@ -1,0 +1,15 @@
+{
+  "profile": {
+    "titlesInclude": ["Sprocket Engineer"],
+    "seniority": { "label": "entry-level" },
+    "remote": { "usRemote": "allowed" },
+    "pay": { "minTopOfRangeBaseUsd": 100000 }
+  },
+  "watchlist": [
+    {
+      "company": "Initech",
+      "provider": "greenhouse",
+      "boardToken": "initech"
+    }
+  ]
+}

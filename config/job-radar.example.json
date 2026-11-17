@@ -1,0 +1,31 @@
+{
+  "_comment": "Example only. Copy to config/job-radar.local.json (gitignored) and edit. All companies and board IDs below are fictional placeholders. The schema is provisional until LIB-539.",
+  "profile": {
+    "titles": ["Software Engineer", "Backend Engineer"],
+    "keywords": ["TypeScript", "Node.js"],
+    "seniority": ["mid", "senior"],
+    "locations": ["Example City"],
+    "remote": true,
+    "exclude": {
+      "companies": ["Initech"],
+      "titleKeywords": ["Manager"]
+    }
+  },
+  "watchlist": [
+    {
+      "company": "Example Corp",
+      "provider": "greenhouse",
+      "boardId": "example-corp"
+    },
+    {
+      "company": "Acme",
+      "provider": "lever",
+      "boardId": "acme"
+    },
+    {
+      "company": "Globex",
+      "provider": "ashby",
+      "boardId": "globex"
+    }
+  ]
+}

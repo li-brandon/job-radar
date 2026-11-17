@@ -14,6 +14,14 @@ Thumbs.db
 .env
 .env.*
 !.env.example
+# Real search profile and watchlist: never commit. Only *.example.* files
+# under config/ are tracked; anything named *.local.* is ignored anywhere.
+config/*
+!config/*.example.*
+*.local.json
+*.local.yaml
+*.local.yml
+
 .idea/
 .vscode/
 *.swp

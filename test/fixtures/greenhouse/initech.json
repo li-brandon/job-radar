@@ -1,0 +1,14 @@
+{
+  "jobs": [
+    {
+      "id": 2001,
+      "internal_job_id": 601,
+      "title": "Widget Engineer II",
+      "absolute_url": "https://boards.greenhouse.io/initech/jobs/2001",
+      "location": { "name": "REMOTE" },
+      "first_published": "2026-03-01T00:00:00Z",
+      "updated_at": "2026-03-02T00:00:00Z"
+    }
+  ],
+  "meta": { "total": 1 }
+}

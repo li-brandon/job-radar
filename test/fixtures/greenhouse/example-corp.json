@@ -1,0 +1,42 @@
+{
+  "jobs": [
+    {
+      "id": 1001,
+      "internal_job_id": 501,
+      "title": "Widget Engineer",
+      "absolute_url": "https://boards.greenhouse.io/example-corp/jobs/1001",
+      "location": { "name": "Example City, EX" },
+      "first_published": "2026-01-15T12:00:00Z",
+      "updated_at": "2026-02-01T12:00:00Z",
+      "requisition_id": "EX-1",
+      "data_compliance": [],
+      "metadata": null
+    },
+    {
+      "id": 1002,
+      "internal_job_id": 502,
+      "title": "Senior Widget Engineer",
+      "absolute_url": "https://boards.greenhouse.io/example-corp/jobs/1002",
+      "location": { "name": "Remote - Exampleland" },
+      "first_published": "2026-01-20T09:30:00-05:00",
+      "updated_at": "2026-02-02T12:00:00Z"
+    },
+    {
+      "id": 1003,
+      "internal_job_id": 503,
+      "title": "Backend Widget Engineer",
+      "absolute_url": "https://boards.greenhouse.io/example-corp/jobs/1003",
+      "location": { "name": "Hybrid - Sample Town" },
+      "updated_at": "2026-02-03T08:00:00Z"
+    },
+    {
+      "id": 1004,
+      "internal_job_id": 504,
+      "title": "Sprocket Engineer",
+      "absolute_url": "https://boards.greenhouse.io/example-corp/jobs/1004",
+      "first_published": null,
+      "updated_at": null
+    }
+  ],
+  "meta": { "total": 4 }
+}

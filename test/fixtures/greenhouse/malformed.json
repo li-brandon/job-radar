@@ -1,0 +1,4 @@
+{
+  "jobs": [{ "id": "not-a-number", "title": 42 }],
+  "meta": { "total": 1 }
+}

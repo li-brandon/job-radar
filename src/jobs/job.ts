@@ -44,8 +44,13 @@ export function isRemoteLocation(location: string): boolean {
   return /\bremote\b/i.test(location);
 }
 
-/** Normalizes a provider timestamp to an ISO 8601 UTC string, or `null` if unusable. */
-export function toIsoDate(value: string | null | undefined): string | null {
+/**
+ * Normalizes a provider timestamp (date string or Unix epoch milliseconds) to an
+ * ISO 8601 UTC string, or `null` if unusable.
+ */
+export function toIsoDate(
+  value: string | number | null | undefined,
+): string | null {
   if (!value) return null;
   const date = new Date(value);
   return Number.isNaN(date.getTime()) ? null : date.toISOString();

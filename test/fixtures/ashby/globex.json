@@ -1,0 +1,41 @@
+{
+  "apiVersion": "1",
+  "jobs": [
+    {
+      "id": "globex-job-1",
+      "title": "Widget Engineer",
+      "department": "Engineering",
+      "team": "Widgets",
+      "employmentType": "FullTime",
+      "locationName": "Example City, EX",
+      "isRemote": false,
+      "isListed": true,
+      "jobUrl": "https://jobs.ashbyhq.com/globex/globex-job-1",
+      "applyUrl": "https://jobs.ashbyhq.com/globex/globex-job-1/application",
+      "publishedAt": "2026-01-15T12:00:00.000Z"
+    },
+    {
+      "id": "globex-job-2",
+      "title": "Senior Widget Engineer",
+      "locationName": "Example City, EX",
+      "isRemote": true,
+      "jobUrl": "https://jobs.ashbyhq.com/globex/globex-job-2",
+      "listedAt": "2026-01-20T09:30:00-05:00"
+    },
+    {
+      "id": "globex-job-3",
+      "title": "Backend Widget Engineer",
+      "locationName": "Remote (Exampleland)",
+      "isRemote": false,
+      "jobUrl": "https://jobs.ashbyhq.com/globex/globex-job-3",
+      "publishedAt": "2026-02-03T08:00:00.000Z",
+      "listedAt": "2026-02-10T08:00:00.000Z"
+    },
+    {
+      "id": "globex-job-4",
+      "title": "Sprocket Engineer",
+      "jobUrl": "https://jobs.ashbyhq.com/globex/globex-job-4",
+      "publishedAt": null
+    }
+  ]
+}

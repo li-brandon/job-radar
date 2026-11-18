@@ -120,6 +120,52 @@ stubbed `fetch`. `test/setup.ts` replaces the global `fetch` with one that
 throws, so a test that forgets to inject a stub fails instead of calling the
 live API.
 
+### Lever
+
+`fetchLeverJobs(watchlist, options?)` reads each `lever` entry's public
+postings from the Lever Postings API
+(`GET https://api.lever.co/v0/postings/{boardToken}?mode=json`) and returns
+`{ jobs, errors }`. Greenhouse and Ashby entries are ignored.
+
+It follows the same rules as the Greenhouse fetcher: read-only, one
+unauthenticated GET per board per run (a repeated board token is only fetched
+once), no retries, the same `User-Agent` and `delayMs`, and one failed board is
+logged and added to `errors` without aborting the run.
+
+- `title`: `text`.
+- `location`: `categories.location`, or `""` if missing.
+- `remote`: `true` when `workplaceType` is `"remote"` (any case) or the
+  location contains the word "remote".
+- `link`: `hostedUrl`.
+- `postedAt`: `createdAt` (Unix epoch milliseconds or an ISO string), as an ISO
+  8601 UTC string; `null` if missing.
+- `sourceJobId`: the Lever posting `id`.
+
+### Ashby
+
+`fetchAshbyJobs(watchlist, options?)` reads each `ashby` entry's public job
+board from the Ashby Job Posting API
+(`GET https://api.ashbyhq.com/posting-api/job-board/{boardToken}`) and returns
+`{ jobs, errors }`. Greenhouse and Lever entries are ignored.
+
+Same rules again: read-only, one unauthenticated GET per board per run, no
+retries, the same `User-Agent` and `delayMs`, and one failed board does not
+abort the run.
+
+- `title`: `title`.
+- `location`: `locationName`, or `""` if missing.
+- `remote`: `true` when `isRemote` is `true` or the location contains the word
+  "remote".
+- `link`: `jobUrl`.
+- `postedAt`: `publishedAt`, else `listedAt`, as an ISO 8601 UTC string; `null`
+  if neither is usable.
+- `sourceJobId`: the Ashby job `id`.
+
+For both, `company` comes from the watchlist entry and `provider` /
+`boardToken` are the source metadata. Tests use fictional fixtures under
+`test/fixtures/lever/` and `test/fixtures/ashby/` with a stubbed `fetch`; no
+test calls the live APIs.
+
 ## Development
 
 ```sh

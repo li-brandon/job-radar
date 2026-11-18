@@ -21,6 +21,9 @@ config/*
 *.local.json
 *.local.yaml
 *.local.yml
+# Run output (data/matches.local.json, data/digest.local.md) holds real
+# company names and titles.
+*.local.md
 
 .idea/
 .vscode/

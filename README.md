@@ -16,6 +16,8 @@ These are hard rules for this project. Changes that break them will not be merge
 - **No personal data in the repo.** The real search profile and watchlist live in
   a gitignored local config file. Only the fictional example config is committed.
   Never commit secrets, emails, or other personal details.
+- **Local output only.** Results are written to local, gitignored files. Nothing
+  is posted or uploaded anywhere.
 
 ## Setup
 
@@ -264,6 +266,89 @@ company names and titles, so **never commit it**. Its shape is:
 
 Every function takes a path, so tests use temp files and never touch the real
 seen file.
+
+## Running a scan
+
+```sh
+npm run job-radar -- run
+npx tsx src/cli.ts run
+```
+
+(`npm run --silent job-radar -- run` hides npm's own header lines.)
+
+One run loads the config, fetches every board in the watchlist (Greenhouse,
+then Lever, then Ashby, one GET per board), matches and scores the jobs,
+dedupes them, drops the ones already in the seen list, and writes what is left.
+
+Options (all optional):
+
+- `--config <path>`: config file (default `config/job-radar.local.json`).
+- `--seen <path>`: seen-jobs file (default `data/seen-jobs.local.json`).
+- `--json-out <path>`: matches JSON (default `data/matches.local.json`).
+- `--md-out <path>`: markdown digest (default `data/digest.local.md`).
+- `-h`, `--help`: print usage and exit 0.
+
+Paths are relative to the current working directory. An unknown command or
+flag prints the usage to stderr and exits non-zero.
+
+**Output files are local and gitignored** (`*.local.json` and `*.local.md` are
+ignored anywhere). After a live run they contain real company names, titles,
+and links, so **never commit them**.
+
+- `data/matches.local.json` holds the new matches, best first:
+
+  ```json
+  {
+    "version": 1,
+    "generatedAt": "2026-01-15T12:00:00.000Z",
+    "matches": [
+      {
+        "key": "example corp|widget engineer|example city",
+        "company": "Example Corp",
+        "title": "Widget Engineer",
+        "location": "Example City, EX",
+        "remote": false,
+        "link": "https://boards.greenhouse.io/example-corp/jobs/1001",
+        "postedAt": "2026-01-15T12:00:00.000Z",
+        "provider": "greenhouse",
+        "boardToken": "example-corp",
+        "sourceJobId": "1001",
+        "score": 14,
+        "titleMatch": "include",
+        "locationMatch": "location",
+        "firstSeenAt": "2026-01-15T12:00:00.000Z"
+      }
+    ]
+  }
+  ```
+
+  `key` is the dedupe key and `firstSeenAt` is when this run recorded the job
+  in the seen list. There are no pay fields because jobs carry no pay data.
+
+- `data/digest.local.md` is the same list as a readable digest: a heading with
+  the count, then one numbered entry per job with the title linked to the
+  posting, plus company, location, score, and posted date when known.
+
+Only the reported matches are added to the seen list. Jobs that did not match
+are not recorded, so a later profile change can still surface them.
+
+**When nothing is new**, the run prints exactly one line, `No new matches.`,
+exits 0, rewrites both output files as empty results, and leaves the seen list
+unchanged. Otherwise it prints one line with the count and output paths.
+
+**Exit codes.** Board failures are logged to stderr, one line per board.
+
+- `0`: the run finished and at least one board was fetched, even if other
+  boards failed or nothing was new.
+- `1`: every board in the watchlist failed (nothing is written and the seen
+  list is not updated), or the config or seen list could not be loaded, or
+  another I/O error stopped the run.
+- `2`: unknown command or bad flags.
+
+`runJobRadar(options)` runs the same pipeline from code and returns
+`{ exitCode, status, matches, errors }` without exiting the process. It takes
+the CLI paths plus `fetch`, `delayMs`, `timeoutMs`, `log`, `stdout`, `stderr`,
+and `now`, so tests stub the network and write only to temp directories.
 
 ## Development
 

@@ -1,4 +1,4 @@
-// Package entrypoint. Matching and the CLI land in later tickets.
+// Package entrypoint. The CLI lands in a later ticket.
 export const PACKAGE_NAME = "job-radar";
 
 export {
@@ -28,6 +28,33 @@ export {
 } from "./fetchers/ashby.js";
 export { isRemoteLocation, toIsoDate } from "./jobs/job.js";
 export type { BoardFetchError, FetchJobsResult, Job } from "./jobs/job.js";
+
+export {
+  containsPhrase,
+  normalizeCompany,
+  normalizeLocation,
+  normalizeText,
+  normalizeTitle,
+} from "./match/normalize.js";
+export { SCORE_WEIGHTS, matchJob, matchJobs } from "./match/match.js";
+export type {
+  JobMatch,
+  LocationMatch,
+  MatchProfile,
+  TitleMatch,
+} from "./match/match.js";
+export { dedupeJobs, dedupeKey, jobOf } from "./match/dedupe.js";
+export type { JobLike } from "./match/dedupe.js";
+export {
+  DEFAULT_SEEN_JOBS_PATH,
+  SeenJobsError,
+  emptySeenJobs,
+  filterUnseen,
+  loadSeenJobs,
+  recordSeen,
+  saveSeenJobs,
+} from "./match/seen.js";
+export type { SeenJobRecord, SeenJobs } from "./match/seen.js";
 
 export {
   ConfigError,

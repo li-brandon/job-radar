@@ -8,6 +8,7 @@
     ],
     "titlesStretch": ["Senior Widget Engineer"],
     "titlesExclude": ["Chief Widget Officer", "Apprentice", "Intern"],
+    "companiesExclude": ["Initech"],
     "seniority": { "label": "mid-level", "minYears": 2, "maxYears": 5 },
     "locations": [
       { "name": "Example Metro", "aliases": ["Example City", "Sample Town"] },

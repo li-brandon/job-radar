@@ -49,6 +49,7 @@ describe("loadConfig success", () => {
     const cfg = await loadConfig(EXAMPLE_PATH);
     expect(cfg.profile.titlesInclude).toContain("Widget Engineer");
     expect(cfg.profile.titlesStretch).toEqual(["Senior Widget Engineer"]);
+    expect(cfg.profile.companiesExclude).toEqual(["Initech"]);
     expect(cfg.profile.seniority).toEqual({
       label: "mid-level",
       minYears: 2,
@@ -76,6 +77,7 @@ describe("loadConfig success", () => {
     const cfg = await loadConfig(MINIMAL_FIXTURE);
     expect(cfg.profile.titlesStretch).toEqual([]);
     expect(cfg.profile.titlesExclude).toEqual([]);
+    expect(cfg.profile.companiesExclude).toEqual([]);
     expect(cfg.profile.locations).toEqual([]);
     expect(cfg.profile.industries).toEqual([]);
     expect(cfg.profile.seniority).toEqual({ label: "entry-level" });
@@ -138,10 +140,12 @@ describe("parseConfig schema errors", () => {
   it("rejects empty or blank strings", async () => {
     const err = await invalidExample((c) => {
       c.profile.titlesExclude = ["  "];
+      c.profile.companiesExclude = [""];
       c.profile.locations[1].aliases = [""];
       c.watchlist[0].company = "";
     });
     expectIssueAt(err, "profile.titlesExclude[0]");
+    expectIssueAt(err, "profile.companiesExclude[0]");
     expectIssueAt(err, "profile.locations[1].aliases[0]");
     expectIssueAt(err, "watchlist[0].company");
   });

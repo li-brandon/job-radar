@@ -1,4 +1,4 @@
-// Package entrypoint. The CLI lands in a later ticket.
+// Package entrypoint. The CLI lives in src/cli.ts.
 export const PACKAGE_NAME = "job-radar";
 
 export {
@@ -55,6 +55,21 @@ export {
   saveSeenJobs,
 } from "./match/seen.js";
 export type { SeenJobRecord, SeenJobs } from "./match/seen.js";
+
+export {
+  DEFAULT_DIGEST_PATH,
+  DEFAULT_MATCHES_PATH,
+  buildMatchesFile,
+  formatMatchCount,
+  matchesFileSchema,
+  renderDigest,
+  toMatchRecord,
+  writeDigest,
+  writeMatchesFile,
+} from "./run/digest.js";
+export type { MatchRecord, MatchesFile } from "./run/digest.js";
+export { NO_NEW_MATCHES_MESSAGE, runJobRadar } from "./run/pipeline.js";
+export type { RunOptions, RunResult, RunStatus } from "./run/pipeline.js";
 
 export {
   ConfigError,

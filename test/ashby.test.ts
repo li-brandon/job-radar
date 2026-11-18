@@ -3,6 +3,7 @@ import {
   USER_AGENT,
   ashbyJobBoardUrl,
   fetchAshbyJobs,
+  mapAshbyJob,
   type WatchlistEntry,
 } from "../src/index.js";
 import { jsonResponse, readFixture, stubFetch } from "./fetch-stub.js";
@@ -39,6 +40,43 @@ describe("ashbyJobBoardUrl", () => {
     expect(ashbyJobBoardUrl("a/b c")).toBe(
       "https://api.ashbyhq.com/posting-api/job-board/a%2Fb%20c",
     );
+  });
+});
+
+describe("mapAshbyJob remote flag", () => {
+  const base = {
+    id: "globex-job-x",
+    title: "Widget Engineer",
+    jobUrl: "https://jobs.ashbyhq.com/globex/globex-job-x",
+  };
+
+  it.each([
+    [
+      "Hybrid with isRemote true",
+      { workplaceType: "Hybrid", isRemote: true },
+      false,
+    ],
+    [
+      "Hybrid with a remote-looking location",
+      { workplaceType: "Hybrid", location: "Remote (Exampleland)" },
+      false,
+    ],
+    ["OnSite", { workplaceType: "OnSite", isRemote: false }, false],
+    ["Remote", { workplaceType: "Remote", isRemote: true }, true],
+    ["lowercase remote", { workplaceType: "remote" }, true],
+    ["no workplaceType, isRemote true", { isRemote: true }, true],
+    [
+      "null workplaceType, remote location",
+      { workplaceType: null, location: "Remote (Exampleland)" },
+      true,
+    ],
+    [
+      "no workplaceType, office location",
+      { location: "Example City, EX", isRemote: false },
+      false,
+    ],
+  ])("%s", (_label, fields, remote) => {
+    expect(mapAshbyJob(GLOBEX, { ...base, ...fields }).remote).toBe(remote);
   });
 });
 
@@ -112,7 +150,7 @@ describe("fetchAshbyJobs", () => {
       {
         company: "Globex",
         title: "Sprocket Engineer",
-        // No locationName: empty string, not remote.
+        // No location: empty string, not remote.
         location: "",
         remote: false,
         link: "https://jobs.ashbyhq.com/globex/globex-job-4",
@@ -121,6 +159,42 @@ describe("fetchAshbyJobs", () => {
         provider: "ashby",
         boardToken: "globex",
         sourceJobId: "globex-job-4",
+      },
+      {
+        company: "Globex",
+        title: "Hybrid Widget Engineer",
+        location: "Sample Town, EX",
+        // workplaceType Hybrid wins over isRemote: true.
+        remote: false,
+        link: "https://jobs.ashbyhq.com/globex/globex-job-5",
+        postedAt: "2026-02-15T10:00:00.000Z",
+        provider: "ashby",
+        boardToken: "globex",
+        sourceJobId: "globex-job-5",
+      },
+      {
+        company: "Globex",
+        title: "Distributed Widget Engineer",
+        location: "Exampleland",
+        // workplaceType Remote.
+        remote: true,
+        link: "https://jobs.ashbyhq.com/globex/globex-job-6",
+        postedAt: "2026-02-16T10:00:00.000Z",
+        provider: "ashby",
+        boardToken: "globex",
+        sourceJobId: "globex-job-6",
+      },
+      {
+        company: "Globex",
+        title: "Onsite Widget Engineer",
+        location: "Example City, EX",
+        // workplaceType OnSite.
+        remote: false,
+        link: "https://jobs.ashbyhq.com/globex/globex-job-7",
+        postedAt: "2026-02-17T10:00:00.000Z",
+        provider: "ashby",
+        boardToken: "globex",
+        sourceJobId: "globex-job-7",
       },
     ]);
   });
@@ -204,6 +278,9 @@ describe("fetchAshbyJobs", () => {
       "globex:globex-job-2",
       "globex:globex-job-3",
       "globex:globex-job-4",
+      "globex:globex-job-5",
+      "globex:globex-job-6",
+      "globex:globex-job-7",
       "initech:initech-job-1",
     ]);
     expect(errors).toEqual([

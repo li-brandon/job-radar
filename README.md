@@ -153,9 +153,11 @@ retries, the same `User-Agent` and `delayMs`, and one failed board does not
 abort the run.
 
 - `title`: `title`.
-- `location`: `locationName`, or `""` if missing.
-- `remote`: `true` when `isRemote` is `true` or the location contains the word
-  "remote".
+- `location`: `location`, or `""` if missing.
+- `remote`: when `workplaceType` is set, `true` only if it is `Remote` (`Hybrid`
+  and `OnSite` are not remote, even though Ashby sets `isRemote` on Hybrid
+  jobs). Without `workplaceType`, `true` when `isRemote` is `true` or the
+  location contains the word "remote".
 - `link`: `jobUrl`.
 - `postedAt`: `publishedAt`, else `listedAt`, as an ISO 8601 UTC string; `null`
   if neither is usable.

@@ -17,8 +17,10 @@ const ashbyJobSchema = z.object({
   id: z.union([z.string(), z.number()]),
   title: z.string(),
   jobUrl: z.string(),
-  locationName: z.string().nullish(),
+  location: z.string().nullish(),
   isRemote: z.boolean().nullish(),
+  // "Remote", "Hybrid", or "OnSite". Hybrid jobs also have isRemote: true.
+  workplaceType: z.string().nullish(),
   publishedAt: z.string().nullish(),
   listedAt: z.string().nullish(),
 });
@@ -33,13 +35,22 @@ export function ashbyJobBoardUrl(boardToken: string): string {
   return `${ASHBY_API_BASE}/${encodeURIComponent(boardToken)}`;
 }
 
+// workplaceType wins when present, because Hybrid jobs also set isRemote.
+function isRemoteAshbyJob(job: AshbyJob, location: string): boolean {
+  const workplaceType = job.workplaceType?.trim();
+  if (workplaceType) {
+    return workplaceType.toLowerCase() === "remote";
+  }
+  return job.isRemote === true || isRemoteLocation(location);
+}
+
 export function mapAshbyJob(entry: WatchlistEntry, job: AshbyJob): Job {
-  const location = job.locationName?.trim() ?? "";
+  const location = job.location?.trim() ?? "";
   return {
     company: entry.company,
     title: job.title,
     location,
-    remote: job.isRemote === true || isRemoteLocation(location),
+    remote: isRemoteAshbyJob(job, location),
     link: job.jobUrl,
     postedAt: toIsoDate(job.publishedAt) ?? toIsoDate(job.listedAt),
     provider: "ashby",

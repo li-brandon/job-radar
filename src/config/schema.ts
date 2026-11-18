@@ -1,5 +1,5 @@
 // Config schema for the search profile and company watchlist (LIB-539).
-// Only the shape is defined here; matching, scoring, and fetching land in later tickets.
+// Only the shape is defined here; matching and scoring live in src/match/ (LIB-542).
 import { z } from "zod";
 
 export const PROVIDERS = ["greenhouse", "lever", "ashby"] as const;
@@ -68,6 +68,7 @@ const profileSchema = z
     }),
     titlesStretch: stringList.default([]),
     titlesExclude: stringList.default([]),
+    companiesExclude: stringList.default([]),
     seniority: senioritySchema,
     locations: z.array(locationSchema).default([]),
     remote: remoteSchema,
